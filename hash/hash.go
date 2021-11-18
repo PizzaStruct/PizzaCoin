@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func GetHash(in []byte) string {
+func GetSHA256(in []byte) string {
 	hashsum := sha256.Sum256(in)
 	return fmt.Sprintf("%x", hashsum)
 }
