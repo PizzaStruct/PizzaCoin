@@ -32,7 +32,7 @@ func LoadBlockchain() *Blockchain {
 	return &bc
 }
 
-func (bc *Blockchain) AddBlock(miner string) {
+func (bc *Blockchain) NewBlock(miner string) {
 	var reward float64 = 50
 	if len(bc.Blocks) == 0 {
 		b := NewBlock(0, &[]Transaction{}, "", reward, miner)
@@ -46,8 +46,19 @@ func (bc *Blockchain) AddBlock(miner string) {
 	helpers.UpdateJsonFile(bc, "blockchain.json")
 }
 
-func (bc *Blockchain) AddTransaction(pk *rsa.PrivateKey, from string, to string, amount float64) {
+func (bc *Blockchain) ReplaceBlockchain(blocks []Block) {
+	bc.Blocks = blocks
+	helpers.UpdateJsonFile(bc, "blockchain.json")
+}
+
+func (bc *Blockchain) NewTransaction(pk *rsa.PrivateKey, from string, to string, amount float64) Transaction {
 	tx := NewTransaction(pk, from, to, amount)
+	bc.Pending_txs = append(bc.Pending_txs, *tx)
+	helpers.UpdateJsonFile(bc, "blockchain.json")
+	return *tx
+}
+
+func (bc *Blockchain) AddTransaction(tx *Transaction) {
 	bc.Pending_txs = append(bc.Pending_txs, *tx)
 	helpers.UpdateJsonFile(bc, "blockchain.json")
 }

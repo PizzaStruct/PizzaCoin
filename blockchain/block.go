@@ -62,8 +62,9 @@ func (b *Block) Mine(d int, txs *[]Transaction) {
 	diff := strings.Repeat("0", d)
 	for !strings.HasPrefix(b.Hash, diff) {
 		b.Transactions = *txs
-		reward_tx := Transaction{From: "", To: b.Miner, Amount: b.Reward + CollectFee(txs), Fee: 0}
-		b.Transactions = append(b.Transactions, reward_tx)
+		r_tx := Transaction{From: "", To: b.Miner, Amount: b.Reward + CollectFee(txs), Fee: 0}
+		r_tx.Hash = string(hash.GetSHA256([]byte(fmt.Sprintf("%s %s %f %f", r_tx.From, r_tx.To, r_tx.Amount, r_tx.Fee))))
+		b.Transactions = append(b.Transactions, r_tx)
 		b.Nonce++
 		b.Hash = b.GetHash()
 	}

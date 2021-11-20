@@ -10,7 +10,14 @@ import (
 	"github.com/PizzaNode/PizzaCoin/blockchain"
 	"github.com/PizzaNode/PizzaCoin/helpers"
 	"github.com/PizzaNode/PizzaCoin/peer"
+	"github.com/PizzaNode/PizzaCoin/peer/client"
 	"github.com/joho/godotenv"
+)
+
+var (
+	Bc      = blockchain.LoadBlockchain()
+	Wallet  = blockchain.LoadWallet()
+	Address = Wallet.GetAddress()
 )
 
 func Run() {
@@ -23,10 +30,6 @@ func Run() {
 		os.Exit(1)
 	}
 
-	bc := blockchain.LoadBlockchain()
-	wallet := peer.LoadWallet()
-	address := wallet.GetAddress()
-
 	args := os.Args[1:]
 	switch args[0] {
 	case "ping":
@@ -34,22 +37,26 @@ func Run() {
 	case "mine":
 		helpers.Loading(context.TODO(), "Mining in process... Type ^C to stop mine")
 		for {
-			bc.AddBlock(address)
-			helpers.UpdateJsonFile(bc, "blockchain.json")
+			Bc.NewBlock(Address)
+			client.ShareBlockchain(Bc.Blocks)
+			helpers.UpdateJsonFile(Bc, "blockchain.json")
 		}
 	case "newtx":
 		amount, err := strconv.ParseFloat(args[2], 64)
 		if err != nil {
 			panic(err)
 		}
-		bc.AddTransaction(wallet.PrivateKey, address, args[1], amount)
+		tx := Bc.NewTransaction(Wallet.PrivateKey, Address, args[1], amount)
+		client.ShareTx(tx)
 	case "wallet":
-		fmt.Printf("Wallet Address: %s\nBalance: %f PizzaCoins", address, bc.GetBalance(address))
+		fmt.Printf("Wallet Address: %s\nBalance: %f PizzaCoins", Address, Bc.GetBalance(Address))
 	case "blockchain":
-		res, _ := json.MarshalIndent(bc, "", "  ")
+		res, _ := json.MarshalIndent(Bc, "", "  ")
 		fmt.Println(string(res))
 	case "peers":
-		break
+		for i := 0; i < len(peer.Peers); i++ {
+			fmt.Printf("%d. %s", i+1, peer.Peers[i].Host.String())
+		}
 	case "connect":
 		break
 	case "disconnect":

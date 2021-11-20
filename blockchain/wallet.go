@@ -1,4 +1,4 @@
-package peer
+package blockchain
 
 import (
 	"crypto/md5"
