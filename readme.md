@@ -5,7 +5,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/PizzaNode/PizzaCoin)](https://github.com/PizzaNode/PizzaCoin/issues)
 [![GitHub forks](https://img.shields.io/github/forks/PizzaNode/PizzaCoin)](https://github.com/PizzaNode/PizzaCoin/network)
 [![GitHub stars](https://img.shields.io/github/stars/PizzaNode/PizzaCoin)](https://github.com/PizzaNode/PizzaCoin/stargazers)
-[![GitHub license](https://img.shields.io/github/license/PizzaNode/PizzaCoin)](https://github.com/PizzaNode/PizzaCoin)
+[![GitHub license](https://img.shields.io/github/license/PizzaNode/PizzaCoin)](LICENSE)
 [![GitHub release](https://img.shields.io/github/v/release/PizzaNode/PizzaCoin?include_prereleases)](https://github.com/PizzaNode/PizzaCoin/releases)
 [![GitHub all releases](https://img.shields.io/github/downloads/PizzaNode/PizzaCoin/total)](https://github.com/PizzaNode/PizzaCoin/releases)
 
